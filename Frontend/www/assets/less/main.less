@@ -3,9 +3,25 @@
 
 body {
     background-color: @mainBgColor;
+    display: flex;
+    flex-direction: row;
+}
+
+.round-span {
+    display: flex;
+    background-color: @mainBorderColor;
+    color: white;
+    font-weight: bold;
+    border-radius: 100%;
+    justify-content: center;
+    align-items: center;
+    height: 25px;
+    width: 25px;
+    padding: 5px;
 }
 
 nav {
+    z-index: 1;
     position: sticky;
     top: 0px;
     display: flex;
@@ -132,19 +148,6 @@ nav {
                 font-size: 2.5rem;
                 font-weight: bolder;
             }
-
-            span {
-                display: flex;
-                background-color: @mainBorderColor;
-                color: white;
-                font-weight: bold;
-                border-radius: 100%;
-                justify-content: center;
-                align-items: center;
-                height: 25px;
-                width: 25px;
-                padding: 5px;
-            }
         }
 
         .category-list {
@@ -157,6 +160,7 @@ nav {
             label {
                 padding: 5px 10px;
                 border-radius: 5px;
+                transition: all 0.5s ease;
             }
 
             input[type="radio"]:not(:checked)+label {
@@ -167,6 +171,161 @@ nav {
             input[type="radio"]:checked+label {
                 background-color: @mainBorderColor;
                 color: white;
+            }
+        }
+    }
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    width: 100%;
+    box-shadow: 5px 5px 10px 3px;
+    background-color: #f5f5f5;
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 25px 10px;
+        background-color: white;
+
+        .orders-label {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: end;
+            gap: 10px;
+
+            label {
+                font-size: 1.75rem;
+            }
+        }
+
+        .clear-orders {
+            justify-self: end;
+            font-size: 1rem;
+            color: @sideColor;
+        }
+    }
+
+    .orders-list {
+        height: 100%;
+
+        .order-card {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            width: 100%;
+            padding: 10px 0px 10px 20px;
+            border-bottom: 1px @sideColor solid;
+
+            >img {
+                position: relative;
+                width: 100px;
+                height: 100px;
+                left: 60px;
+            }
+
+            .order-card-content {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 5px;
+
+                .title {
+                    font-size: 2rem;
+                    color: @mainBorderColor;
+                }
+
+                .stats {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 20px;
+                }
+
+                .settings {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: center;
+                    gap: 15px;
+
+                    button {
+                        display: flex;
+                        font-weight: bold;
+                        border-radius: 100%;
+                        justify-content: center;
+                        align-items: center;
+                        height: 30px;
+                        width: 30px;
+                        padding: 5px;
+                        color: white;
+                        border-style: solid;
+                    }
+
+                    .amount {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        align-items: center;
+                        gap: 10px;
+
+                        .sub {
+                            background-color: #d14437;
+                            border-color: #e72e1d;
+                        }
+
+                        .add {
+                            background-color:  #51d234;
+                            border-color: #43e31f;
+                        }
+                    }
+                    
+                    .cancel {
+                        background-color: white;
+                        border-color: rgb(214, 212, 212);
+                        color: red;
+                        margin-left: 20px;
+                    }
+                }
+            }
+        }
+    }
+
+    .footer {
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 15px;
+
+        .total {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            padding: 5px 10px 0px 10px;
+        }
+
+        .order-btn-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0px 25px 10px 25px;
+
+            button {
+                background-color: @mainColor;
+                border-color: @mainBorderColor;
+                width: 100%;
             }
         }
     }

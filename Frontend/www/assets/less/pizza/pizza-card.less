@@ -4,6 +4,12 @@ label {
   margin-bottom: 0;
 }
 
+.pizza-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .pizza-card {
   position: relative;
   max-width: 250px;
@@ -20,11 +26,11 @@ label {
   }
 
   .tag-badge.tag-new {
-    background-color: #cb5b51;
+    background-color: @softRed;
   }
 
   .tag-badge.tag-popular {
-    background-color: #72b763;
+    background-color: @softGreen;
   }
 
   img {
