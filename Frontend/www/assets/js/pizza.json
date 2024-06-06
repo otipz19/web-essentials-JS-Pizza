@@ -1,0 +1,59 @@
+[
+    {
+        "tag": "Нова",
+        "img": "assets\\images\\pizza_7.jpg",
+        "title": "Імпреза",
+        "subtitle": "М'ясна піца",
+        "description": "Балик, салямі, куриця, сир моцарелла, сир рокфорд, ананаси, томатна паста, петрушка",
+        "options" : [
+            {
+                "size": 30,
+                "weight": 370,
+                "price": 99
+            },
+            {
+                "size": 40,
+                "weight": 660,
+                "price": 169
+            }
+        ]
+    },
+    {
+        "tag": "Популярна",
+        "img": "assets\\images\\pizza_2.jpg",
+        "title": "BBQ",
+        "subtitle": "М'ясна піца",
+        "description": "Мисливські ковбаски, ковбаски папероні, шинка, сир домашній, шампінйони, петрушка, оливки",
+        "options" : [
+            {
+                "size": 30,
+                "weight": 460,
+                "price": 139
+            },
+            {
+                "size": 40,
+                "weight": 840,
+                "price": 199
+            }
+        ]
+    },
+    {
+        "tag": "nodata",
+        "img": "assets\\images\\pizza_1.jpg",
+        "title": "Міксовий поло",
+        "subtitle": "М'ясна піца",
+        "description": "Вітчина, куриця копчена, сир моцарелла, ананаси, кукурудза, петрушка, соус томатний",
+        "options" : [
+            {
+                "size": 30,
+                "weight": 430,
+                "price": 115
+            },
+            {
+                "size": 40,
+                "weight": 780,
+                "price": 179
+            }
+        ]
+    }
+]
