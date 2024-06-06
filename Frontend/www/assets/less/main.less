@@ -3,8 +3,15 @@
 
 body {
     background-color: @mainBgColor;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+}
+
+.main {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: center;
 }
 
 .round-span {
@@ -127,9 +134,7 @@ nav {
     }
 }
 
-.container {
-    // background-color: @mainBgColor;
-
+.my-container {
     >.caption {
         display: flex;
         flex-direction: column;
@@ -181,7 +186,7 @@ nav {
     flex-direction: column;
     justify-content: space-between;
     align-items: stretch;
-    width: 100%;
+    // width: 20%;
     box-shadow: 5px 5px 10px 3px;
     background-color: #f5f5f5;
 
