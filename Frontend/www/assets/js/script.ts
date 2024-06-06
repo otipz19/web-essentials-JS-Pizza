@@ -3,11 +3,13 @@ import { Option } from './option';
 
 const cardTemplate: HTMLTemplateElement = document.getElementById("pizza-card-template") as HTMLTemplateElement;
 
-fetch("assets/js/pizza.json")
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("assets/js/pizza.json")
     .then(response => response.json())
     .then(data => {
         loadPizzaList(data as Pizza[]);
     });
+});
 
 function loadPizzaList(data: Pizza[]): void {
     let listContainer = document.querySelector("div#pizza_list") as HTMLElement;

@@ -1,10 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var cardTemplate = document.getElementById("pizza-card-template");
-fetch("assets/js/pizza.json")
-    .then(function (response) { return response.json(); })
-    .then(function (data) {
-    loadPizzaList(data);
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("assets/js/pizza.json")
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+        loadPizzaList(data);
+    });
 });
 function loadPizzaList(data) {
     var listContainer = document.querySelector("div#pizza_list");
