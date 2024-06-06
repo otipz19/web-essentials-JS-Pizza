@@ -12,19 +12,101 @@ nav {
     flex-direction: row;
     justify-content: start;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0.85);
+    padding: 0px 10px 0px 10px;
 
     .my-badge {
+        position: relative;
+
         .my-text {
             color: white;
-            background-color: @mainBorderColor;
+            background-color: rgba(0, 0, 0, 0);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
+            gap: 5px;
+            width: 100px;
+
+            .pizza {
+                font-size: 1.5rem;
+            }
+
+            .kma {
+                font-size: 2rem;
+            }
         }
 
-        svg {
-            transform: translateY(200px);
+        img {
+            position: absolute;
+            top: -650px;
+            z-index: -1;
+        }
+    }
+
+    .main-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+        width: 100%;
+        padding: 0px 15px;
+
+        .upper-part {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            color: #a1a1a1;
+            border-bottom: 1px solid #a1a1a1;
+            padding-top: 5px;
+
+            .info {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: stretch;
+                gap: 25px;
+                padding-bottom: 5px;
+
+                div {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: end;
+                    // font-weight: 100 !important;
+                }
+
+                .tel {
+                    height: 100%;
+                    font-size: 2rem;
+                }
+
+                .time {
+                    font-size: 1rem;
+                    margin-bottom: 3px;
+                }
+
+                .delivery {
+                    font-size: 1.5rem;
+                    margin-bottom: 1px;
+                }
+            }
+
+            >button {
+                justify-self: end;
+                background-color: @mainColor;
+                border-color: @mainBorderColor;
+            }
+        }
+
+        .tabs {
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+            color: white;
+            padding-top: 7px;
+            padding-bottom: 7px;
         }
     }
 }
@@ -32,14 +114,14 @@ nav {
 .container {
     // background-color: @mainBgColor;
 
-    > .caption {
+    >.caption {
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         padding: 25px;
 
-        > .title {
+        >.title {
             display: flex;
             flex-direction: row;
             justify-content: center;
@@ -78,7 +160,7 @@ nav {
             }
 
             input[type="radio"]:not(:checked)+label {
-                background-color:  @mainBgColor;
+                background-color: @mainBgColor;
                 color: @mainColor;
             }
 
