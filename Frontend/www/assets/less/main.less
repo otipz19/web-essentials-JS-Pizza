@@ -5,6 +5,30 @@ body {
     background-color: @mainBgColor;
 }
 
+nav {
+    position: sticky;
+    top: 0px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+
+    .my-badge {
+        .my-text {
+            color: white;
+            background-color: @mainBorderColor;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        svg {
+            transform: translateY(200px);
+        }
+    }
+}
+
 .container {
     // background-color: @mainBgColor;
 
