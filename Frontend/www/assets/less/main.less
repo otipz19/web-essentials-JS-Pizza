@@ -357,3 +357,28 @@ nav {
         }
     }
 }
+
+.discount-badge {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100px;
+    color: white;
+    padding: 0px 15px 0px 15px;
+    gap: 15px;
+
+    .offer {
+        text-align: center;
+        border-bottom: dotted 5px @mainBorderColor;
+    }
+
+    img {
+        z-index: -1;
+        position: absolute;
+        top: -565px;
+    }
+}
