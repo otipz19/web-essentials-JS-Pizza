@@ -22,10 +22,16 @@ module.exports = function(grunt) {
 
             //Збірка з назвою піца
             pizza: {
-                src:        'Frontend/src/main.js',
-                dest:       'Frontend/www/assets/js/main.js'
+                src:        'Frontend/www/assets/js/script.js',
+                dest:       'Frontend/www/assets/js/script.js'
             }
-        }
+        },
+
+        ts: {
+            default: {
+              tsconfig: './tsconfig.json'
+            }
+          },
     };
 
     //Налаштування відстежування змін в проекті
@@ -48,13 +54,14 @@ module.exports = function(grunt) {
     grunt.initConfig(config);
 
     //Сказати які модулі необхідно виокристовувати
+    grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-watch');
-
 
     //Список завданнь по замовчування
     grunt.registerTask('default',
         [
+            'ts',
             'browserify:pizza',
             //Інші завдання які необхідно виконати
         ]

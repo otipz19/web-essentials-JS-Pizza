@@ -1,5 +1,7 @@
 export type Option = {
-    size: number;
-    weight: number;
-    price: number;
+    id: number,
+    title: string,
+    size: number,
+    weight: number,
+    price: number,
 }
