@@ -92,41 +92,13 @@
         </div>
 
         <div class="orders-list">
-            <div class="order-card">
-                <div class="order-card-content">
-                    <label class="title">BBQ (Мала)</label>
-
-                    <div class="stats">
-                        <div>
-                            <img src="assets/images/size-icon.svg">
-                            <label class="size">30</label>
-                        </div>
-                        <div>
-                            <img src="assets/images/weight.svg">
-                            <label class="weight">480</label>
-                        </div>
-                    </div>
-
-                    <div class="settings">
-                        <label class="cost">556 грн.</label>
-
-                        <div class="amount">
-                            <button class="sub btn btn-primary">-</button>
-                            <label class="value">4</label>
-                            <button class="add btn btn-primary">+</button>
-                        </div>
-
-                        <button class="cancel btn btn-primary">x</button>
-                    </div>
-                </div>
-                <img src="assets/images/pizza_1.jpg">
-            </div>
+            
         </div>
 
         <div class="footer">
             <div class="total">
                 <label>Сума замовлення</label>
-                <label>924 грн.</label>
+                <label class="total-price">924 грн.</label>
             </div>
             <div class="order-btn-container">
                 <button class="btn btn-primary order-btn">Замовити</button>
@@ -186,7 +158,7 @@
                                 <label class="currency">грн.</label>
                             </div>
                             <div class="buy-btn">
-                                <a href="#" class="btn btn-primary">Купити</a>
+                                <button class="btn btn-primary">Купити</button>
                             </div>
                         </div>
                     </div>
@@ -209,12 +181,44 @@
                                 <label class="currency">грн.</label>
                             </div>
                             <div class="buy-btn">
-                                <a href="#" class="btn btn-primary">Купити</a>
+                                <button class="btn btn-primary">Купити</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </template>
+
+    <template id="order-card-template">
+        <div class="order-card">
+            <div class="order-card-content">
+                <label class="title">[title]</label>
+
+                <div class="stats">
+                    <div>
+                        <img src="assets/images/size-icon.svg">
+                        <label class="size">[size]</label>
+                    </div>
+                    <div>
+                        <img src="assets/images/weight.svg">
+                        <label class="weight">[weight]</label>
+                    </div>
+                </div>
+
+                <div class="settings">
+                    <label class="cost">[total price]</label>
+
+                    <div class="amount">
+                        <button class="sub btn btn-primary">-</button>
+                        <label class="value">[amount]</label>
+                        <button class="add btn btn-primary">+</button>
+                    </div>
+
+                    <button class="cancel btn btn-primary">x</button>
+                </div>
+            </div>
+            <img src="assets/images/pizza_1.jpg">
         </div>
     </template>
 

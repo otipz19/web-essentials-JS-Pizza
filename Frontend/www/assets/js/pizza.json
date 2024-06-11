@@ -10,12 +10,14 @@
         "options" : [
             {
                 "id": 1,
+                "title": "Мала",
                 "size": 30,
                 "weight": 370,
                 "price": 99
             },
             {
                 "id": 2,
+                "title": "Велика",
                 "size": 40,
                 "weight": 660,
                 "price": 169
@@ -33,12 +35,14 @@
         "options" : [
             {
                 "id": 1,
+                "title": "Мала",
                 "size": 30,
                 "weight": 460,
                 "price": 139
             },
             {
                 "id": 2,
+                "title": "Велика",
                 "size": 40,
                 "weight": 840,
                 "price": 199
@@ -56,12 +60,14 @@
         "options" : [
             {
                 "id": 1,
+                "title": "Мала",
                 "size": 30,
                 "weight": 430,
                 "price": 115
             },
             {
                 "id": 2,
+                "title": "Велика",
                 "size": 40,
                 "weight": 780,
                 "price": 179
