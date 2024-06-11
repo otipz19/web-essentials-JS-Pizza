@@ -5,8 +5,8 @@ import { Basket } from "./basket";
 
 const cardTemplate: HTMLTemplateElement = document.getElementById("pizza-card-template") as HTMLTemplateElement;
 
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("assets/js/pizza.json")
+document.addEventListener("DOMContentLoaded", async () => {
+    await fetch("assets/js/pizza.json")
     .then(response => response.json())
     .then(data => {
         let pizzaRepository = data as Pizza[];
@@ -28,6 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
             loadValueToElementBySelector(pizzaElement, ".subtitle", pizza.subtitle);
             loadValueToElementBySelector(pizzaElement, ".description", pizza.description);
             loadOptions(pizzaElement, pizza);
+            pizzaElement.setAttribute("data-categories", pizza.categories.join(','));
             return pizzaElement;
         }
         
@@ -62,11 +63,23 @@ document.addEventListener("DOMContentLoaded", () => {
             loadValueToElementBySelector(optionElement, ".size", option.size.toString());
             loadValueToElementBySelector(optionElement, ".weight", option.weight.toString());
             loadValueToElementBySelector(optionElement, ".price > .value", option.price.toString());
-            let buyBtn = optionElement.querySelector(".buy-btn > button") as HTMLAnchorElement;
+            let buyBtn = optionElement.querySelector(".buy-btn > button") as HTMLElement;
             buyBtn.addEventListener("click", event => {
                 event.preventDefault();
                 basket.add(pizza, option)
             });
         }
     });
+
+    const pizzaCards = document.querySelectorAll(".pizza-container");
+
+    let filters = document.querySelectorAll(".category-list > label");
+    filters.forEach(filter => filter.addEventListener("click", () => {
+        pizzaCards.forEach(node => {
+            let pizzaCard = node as HTMLElement;
+            let categories = pizzaCard.getAttribute("data-categories").split(",");
+            let display = filter.id == "all" || categories.find(c => c == filter.id) != undefined ? "flex" : "none";
+            pizzaCard.style.display = display;
+        });
+    }));
 });

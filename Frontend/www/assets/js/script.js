@@ -152,12 +152,21 @@ exports.BasketItem = BasketItem;
 
 },{"./utils":3}],2:[function(require,module,exports){
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 const basket_1 = require("./basket");
 const cardTemplate = document.getElementById("pizza-card-template");
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("assets/js/pizza.json")
+document.addEventListener("DOMContentLoaded", () => __awaiter(void 0, void 0, void 0, function* () {
+    yield fetch("assets/js/pizza.json")
         .then(response => response.json())
         .then(data => {
         let pizzaRepository = data;
@@ -177,6 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
             (0, utils_1.loadValueToElementBySelector)(pizzaElement, ".subtitle", pizza.subtitle);
             (0, utils_1.loadValueToElementBySelector)(pizzaElement, ".description", pizza.description);
             loadOptions(pizzaElement, pizza);
+            pizzaElement.setAttribute("data-categories", pizza.categories.join(','));
             return pizzaElement;
         }
         function loadTag(pizzaElement, pizza) {
@@ -216,7 +226,17 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     });
-});
+    const pizzaCards = document.querySelectorAll(".pizza-container");
+    let filters = document.querySelectorAll(".category-list > label");
+    filters.forEach(filter => filter.addEventListener("click", () => {
+        pizzaCards.forEach(node => {
+            let pizzaCard = node;
+            let categories = pizzaCard.getAttribute("data-categories").split(",");
+            let display = filter.id == "all" || categories.find(c => c == filter.id) != undefined ? "flex" : "none";
+            pizzaCard.style.display = display;
+        });
+    }));
+}));
 
 },{"./basket":1,"./utils":3}],3:[function(require,module,exports){
 "use strict";
