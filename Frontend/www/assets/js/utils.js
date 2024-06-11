@@ -7,7 +7,7 @@ function cloneTemplateContent(template) {
 }
 exports.cloneTemplateContent = cloneTemplateContent;
 function loadValueToElementBySelector(parent, selector, value) {
-    var element = parent.querySelector(selector);
+    let element = parent.querySelector(selector);
     element.innerText = value;
 }
 exports.loadValueToElementBySelector = loadValueToElementBySelector;

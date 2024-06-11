@@ -1,37 +1,56 @@
 import { Option } from './option';
 import { Pizza } from './pizza';
 import { cloneTemplateContent, loadValueToElementBySelector } from './utils';
+import { BasketSerializable, BasketItemSerializable } from './BasketSerializable';
 
 export class Basket {
+    private static LOCAL_STORAGE_KEY: string = "BASKET_KEY";
+
     items: BasketItem[];
 
     ordersListElement: HTMLElement;
     ordersAmountElement: HTMLElement;
     totalPriceElement: HTMLElement;
 
-    constructor(element: HTMLElement) {
-        this.items = [];
+    constructor(element: HTMLElement, pizzaRepository: Pizza[]) {
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span") as HTMLElement;
         this.totalPriceElement = document.querySelector(".total-price") as HTMLElement;
-        this.onItemsUpdated();
         let clearInputBtn = document.querySelector(".clear-orders") as HTMLElement;
         clearInputBtn.addEventListener("click", event => {
             event.preventDefault();
             this.clear();
         })
+
+        this.loadItemsFromLocalStorage(pizzaRepository);
+        this.onItemsUpdated();
     }
 
-    add(pizza: Pizza, option: Option): void {
+    private loadItemsFromLocalStorage(pizzaRepository: Pizza[]) {
+        this.items = [];
+        let fromLocalStorage = this.readLocalStorage();
+        for (let item of fromLocalStorage.items) {
+            let pizza: Pizza = pizzaRepository.find(pizza => pizza.id == item.pizzaId);
+            let option: Option = pizza.options.find(option => option.id == item.optionId);
+            let basketItem = new BasketItem(this, pizza, option);
+            this.items.push(basketItem);
+            this.ordersListElement.appendChild(basketItem.card);
+            basketItem.amount = item.amount;
+            basketItem.updateAmount();
+        }
+    }
+
+    add(pizza: Pizza, option: Option): BasketItem {
         let item = this.getItem(pizza, option);
         if(item === null){
-            let item = new BasketItem(this, pizza, option);
+            item = new BasketItem(this, pizza, option);
             this.items.push(item);
             this.ordersListElement.appendChild(item.card);
         } else {
             item.increment();
         }
         this.onItemsUpdated();
+        return item;
     }
 
     private getItem(pizza: Pizza, option: Option): BasketItem | null {
@@ -55,6 +74,32 @@ export class Basket {
         this.ordersAmountElement.innerText = this.items.length.toString();
         let totalPrice = this.items.reduce((res, el) => res + el.totalPrice(), 0);
         this.totalPriceElement.innerText = `${totalPrice}  грн.`;
+        this.serialize();
+    }
+
+    private serialize(): void {
+        let itemsSerializable: BasketItemSerializable[] = this.items.map(item => {
+            return {
+                pizzaId: item.pizza.id,
+                optionId: item.option.id,
+                amount: item.amount,
+            };   
+        }) 
+        let basketSerializable: BasketSerializable = {
+            items: itemsSerializable,
+        };
+        this.writeLocalStorage(basketSerializable);
+    }
+
+    private writeLocalStorage(basket: BasketSerializable): void {
+        localStorage.setItem(Basket.LOCAL_STORAGE_KEY, JSON.stringify(basket));
+    }
+
+    private readLocalStorage(): BasketSerializable {
+        if(localStorage.getItem(Basket.LOCAL_STORAGE_KEY) === null) {
+            localStorage.setItem(Basket.LOCAL_STORAGE_KEY, '{"items": []}');
+        }
+        return JSON.parse(localStorage.getItem(Basket.LOCAL_STORAGE_KEY)) as BasketSerializable;
     }
 };
 
@@ -99,9 +144,13 @@ export class BasketItem  {
     }
 
     private onAmountUpdated(): void {
+        this.updateAmount();
+        this.basket.onItemsUpdated();
+    }
+
+    updateAmount(): void {
         loadValueToElementBySelector(this.card, ".cost", this.totalPrice().toString());
         loadValueToElementBySelector(this.card, ".amount .value", this.amount.toString());
-        this.basket.onItemsUpdated();
     }
 
     totalPrice(): number {
@@ -109,15 +158,18 @@ export class BasketItem  {
     }
 
     increment(): void {
-        this.amount++;
-        this.onAmountUpdated();
+        this.changeAmount(this.amount + 1);
     }
 
     decrement(): void {
-        if(this.amount === 1){
+        this.changeAmount(this.amount - 1);
+    }
+
+    changeAmount(value: number): void {
+        this.amount = value;
+        if(this.amount < 1){
             this.remove();
         } else {
-            this.amount--;
             this.onAmountUpdated();
         }
     }
