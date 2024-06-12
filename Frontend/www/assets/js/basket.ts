@@ -1,7 +1,8 @@
 import { Option } from './option';
 import { Pizza } from './pizza';
-import { cloneTemplateContent, loadValueToElementBySelector } from './utils';
 import { BasketSerializable, BasketItemSerializable } from './BasketSerializable';
+import { BasketMediator } from './basketMediator';
+import { BasketItem } from './basketItem';
 
 export class Basket {
     private static LOCAL_STORAGE_KEY: string = "BASKET_KEY";
@@ -12,7 +13,10 @@ export class Basket {
     ordersAmountElement: HTMLElement;
     totalPriceElement: HTMLElement;
 
-    constructor(element: HTMLElement, pizzaRepository: Pizza[]) {
+    basketMediator: BasketMediator;
+
+    constructor(element: HTMLElement, basketMediator: BasketMediator) {
+        this.basketMediator = basketMediator;
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span") as HTMLElement;
         this.totalPriceElement = document.querySelector(".total-price") as HTMLElement;
@@ -22,16 +26,15 @@ export class Basket {
             this.clear();
         })
 
-        this.loadItemsFromLocalStorage(pizzaRepository);
+        this.loadItemsFromLocalStorage();
         this.onItemsUpdated();
     }
 
-    private loadItemsFromLocalStorage(pizzaRepository: Pizza[]) {
+    private loadItemsFromLocalStorage() {
         this.items = [];
         let fromLocalStorage = this.readLocalStorage();
         for (let item of fromLocalStorage.items) {
-            let pizza: Pizza = pizzaRepository.find(pizza => pizza.id == item.pizzaId);
-            let option: Option = pizza.options.find(option => option.id == item.optionId);
+            let [pizza, option] = this.basketMediator.get(item.pizzaId, item.optionId);
             let basketItem = new BasketItem(this, pizza, option);
             this.items.push(basketItem);
             this.ordersListElement.appendChild(basketItem.card);
@@ -101,81 +104,4 @@ export class Basket {
         }
         return JSON.parse(localStorage.getItem(Basket.LOCAL_STORAGE_KEY)) as BasketSerializable;
     }
-};
-
-export class BasketItem  {
-    basket: Basket;
-
-    pizza: Pizza;
-    option: Option;
-    amount: number;
-
-    card: HTMLElement;
-
-    constructor(basket: Basket, pizza: Pizza, option: Option) {
-        this.basket = basket;
-        this.pizza = pizza;
-        this.option = option;
-        this.amount = 1;
-        this.buildElement();
-    }
-
-    private buildElement(): void {
-        const template = document.getElementById("order-card-template") as HTMLTemplateElement;
-        this.card = cloneTemplateContent(template);
-        loadValueToElementBySelector(this.card, ".title", `${this.pizza.title} (${this.option.title})`);
-        loadValueToElementBySelector(this.card, ".size", this.option.size.toString());
-        loadValueToElementBySelector(this.card, ".weight", this.option.weight.toString());
-        this.onAmountUpdated();
-        this.addClickHandlerToBtn(".sub", () => this.decrement());
-        this.addClickHandlerToBtn(".add", () => this.increment());
-        this.addClickHandlerToBtn(".cancel", () => this.remove());
-    }
-
-    private addClickHandlerToBtn(selector: string, handler: () => void) {
-        this.getBtn(selector).addEventListener("click", event =>{
-            event.preventDefault();
-            handler();
-        })
-    }
-
-    private getBtn(selector: string): HTMLButtonElement {
-        return this.card.querySelector(selector) as HTMLButtonElement;
-    }
-
-    private onAmountUpdated(): void {
-        this.updateAmount();
-        this.basket.onItemsUpdated();
-    }
-
-    updateAmount(): void {
-        loadValueToElementBySelector(this.card, ".cost", this.totalPrice().toString());
-        loadValueToElementBySelector(this.card, ".amount .value", this.amount.toString());
-    }
-
-    totalPrice(): number {
-        return this.amount * this.option.price;
-    }
-
-    increment(): void {
-        this.changeAmount(this.amount + 1);
-    }
-
-    decrement(): void {
-        this.changeAmount(this.amount - 1);
-    }
-
-    changeAmount(value: number): void {
-        this.amount = value;
-        if(this.amount < 1){
-            this.remove();
-        } else {
-            this.onAmountUpdated();
-        }
-    }
-
-    remove(): void {
-        this.card.remove();
-        this.basket.remove(this);
-    }
-};
+}
