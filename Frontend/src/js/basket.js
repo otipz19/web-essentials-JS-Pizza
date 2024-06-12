@@ -8,6 +8,7 @@ class Basket {
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span");
         this.totalPriceElement = document.querySelector(".total-price");
+        this.orderBtn = document.querySelector(".order-btn");
         this.setupClearBtn();
         this.setupOrderBtn();
         this.loadItemsFromLocalStorage();
@@ -31,6 +32,7 @@ class Basket {
                 };
             });
             localStorage.setItem(Basket.STATS_LS_LEY, JSON.stringify(statsItems));
+            window.location.href = "stats.html";
         });
     }
     loadItemsFromLocalStorage() {
@@ -76,6 +78,12 @@ class Basket {
         this.ordersAmountElement.innerText = this.items.length.toString();
         let totalPrice = this.items.reduce((res, el) => res + el.totalPrice(), 0);
         this.totalPriceElement.innerText = `${totalPrice}  грн.`;
+        if (this.items.length == 0) {
+            this.orderBtn.toggleAttribute("disabled");
+        }
+        else {
+            this.orderBtn.removeAttribute("disabled");
+        }
         this.serialize();
     }
     serialize() {

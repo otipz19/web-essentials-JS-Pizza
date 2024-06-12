@@ -14,6 +14,7 @@ export class Basket {
     ordersListElement: HTMLElement;
     ordersAmountElement: HTMLElement;
     totalPriceElement: HTMLElement;
+    orderBtn: HTMLButtonElement;
 
     basketMediator: BasketMediator;
 
@@ -22,6 +23,7 @@ export class Basket {
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span") as HTMLElement;
         this.totalPriceElement = document.querySelector(".total-price") as HTMLElement;
+        this.orderBtn = document.querySelector(".order-btn") as HTMLButtonElement;
         this.setupClearBtn();
         this.setupOrderBtn();
         this.loadItemsFromLocalStorage();
@@ -47,6 +49,7 @@ export class Basket {
                 };
             });
             localStorage.setItem(Basket.STATS_LS_LEY, JSON.stringify(statsItems));
+            window.location.href = "stats.html";
         });
     }
 
@@ -97,6 +100,11 @@ export class Basket {
         this.ordersAmountElement.innerText = this.items.length.toString();
         let totalPrice = this.items.reduce((res, el) => res + el.totalPrice(), 0);
         this.totalPriceElement.innerText = `${totalPrice}  грн.`;
+        if(this.items.length == 0) {
+            this.orderBtn.toggleAttribute("disabled");
+        } else {
+            this.orderBtn.removeAttribute("disabled");
+        }
         this.serialize();
     }
 
