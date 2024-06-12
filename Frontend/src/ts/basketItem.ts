@@ -23,7 +23,8 @@ export class BasketItem  {
     private buildElement(): void {
         const template = document.getElementById("order-card-template") as HTMLTemplateElement;
         this.card = cloneTemplateContent(template);
-        loadValueToElementBySelector(this.card, ".title", `${this.pizza.title} (${this.option.title})`);
+        loadValueToElementBySelector(this.card, ".pizza-title", this.pizza.title.toString());
+        loadValueToElementBySelector(this.card, ".option-subtitle", `(${this.option.title})`);
         loadValueToElementBySelector(this.card, ".size", this.option.size.toString());
         loadValueToElementBySelector(this.card, ".weight", this.option.weight.toString());
         this.onAmountUpdated();

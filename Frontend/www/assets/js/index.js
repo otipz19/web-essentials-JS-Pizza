@@ -130,7 +130,8 @@ class BasketItem {
     buildElement() {
         const template = document.getElementById("order-card-template");
         this.card = (0, utils_1.cloneTemplateContent)(template);
-        (0, utils_1.loadValueToElementBySelector)(this.card, ".title", `${this.pizza.title} (${this.option.title})`);
+        (0, utils_1.loadValueToElementBySelector)(this.card, ".pizza-title", this.pizza.title.toString());
+        (0, utils_1.loadValueToElementBySelector)(this.card, ".option-subtitle", `(${this.option.title})`);
         (0, utils_1.loadValueToElementBySelector)(this.card, ".size", this.option.size.toString());
         (0, utils_1.loadValueToElementBySelector)(this.card, ".weight", this.option.weight.toString());
         this.onAmountUpdated();

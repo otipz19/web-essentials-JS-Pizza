@@ -138,9 +138,9 @@ nav {
             padding-top: 5px;
             padding-bottom: 5px;
 
-            @media (max-width: 650px) {
-                visibility: hidden;
-            }
+            // @media (max-width: 650px) {
+            //     visibility: hidden;
+            // }
 
             a {
                 text-decoration: inherit;
@@ -307,8 +307,16 @@ nav {
                 gap: 5px;
 
                 .title {
-                    font-size: 2rem;
+                    font-weight: bolder;
                     color: @mainBorderColor;
+
+                    .pizza-title {
+                        font-size: 2rem;
+                    }
+    
+                    .option-subtitle {
+                        font-size: 1.5rem;
+                    }
                 }
 
                 .stats {
@@ -324,7 +332,16 @@ nav {
                     flex-direction: row;
                     justify-content: space-between;
                     align-items: center;
-                    gap: 15px;
+                    gap: 10px;
+
+                    .cost {
+                        min-width: 6ch;
+                    }
+
+                    .value {
+                        min-width: 2ch;
+                        text-align: center;
+                    }
 
                     button {
                         display: flex;
