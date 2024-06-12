@@ -7,7 +7,7 @@
       "forceConsistentCasingInFileNames": true,
       "allowImportingTsExtensions": false
     },
-    "include": ["Frontend\\www\\assets\\js\\*.ts"],
+    "include": ["Frontend\\src\\ts\\*.ts", "Frontend/src/ts/basket.ts", "Frontend/src/ts/basketItem.ts", "Frontend/src/ts/basketMediator.ts", "Frontend/src/ts/BasketSerializable.ts", "Frontend/src/ts/option.ts", "Frontend/src/ts/pizza.ts", "Frontend/src/ts/pizzaList.ts", "Frontend/src/ts/script.ts", "Frontend/src/ts/utils.ts"],
     "exclude": ["node_modules"]
   }
   
