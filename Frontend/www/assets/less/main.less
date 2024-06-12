@@ -6,6 +6,7 @@ body {
     background-color: @mainBgColor;
     display: grid;
     grid-template-columns: 4fr 1fr;
+    min-height: 100vh;
 }
 
 .round-span {
@@ -135,11 +136,26 @@ nav {
             justify-content: start;
             align-items: center;
             color: white;
-            padding-top: 7px;
-            padding-bottom: 7px;
+            padding-top: 5px;
+            padding-bottom: 5px;
 
             @media (max-width: 650px) {
                 visibility: hidden;
+            }
+
+            a {
+                text-decoration: inherit;
+                color: inherit;
+                cursor: auto;
+                padding: 1px;
+                border: solid transparent 1px;
+            }
+
+            a:hover {
+                background-color: @mainColor;
+                border: solid @mainBorderColor 1px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 5px 1px @mainColor;
             }
         }
     }
@@ -149,8 +165,13 @@ nav {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    min-height: 88%;
+
+    #pizza-list {
+        min-height: 80%;
+    }
 
     >.caption {
         padding: 25px;
@@ -201,6 +222,10 @@ nav {
 }
 
 .sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -236,8 +261,26 @@ nav {
         }
     }
 
+    .orders-list::-webkit-scrollbar {
+        width: 14px;
+    }
+
+    .orders-list::-webkit-scrollbar-track {
+        border-radius: 16px;
+        background-color: #e7e7e7;
+        border: 1px solid #cacaca;
+    }
+
+    .orders-list::-webkit-scrollbar-thumb {
+        border-radius: 16px;
+        border: 3px solid transparent;
+        background-clip: content-box;
+        background-color: @mainColor;
+    }
+
     .orders-list {
         height: 100%;
+        overflow-y: scroll;
 
         .order-card {
             position: relative;
@@ -383,5 +426,22 @@ nav {
         z-index: -1;
         position: absolute;
         top: -565px;
+    }
+}
+
+footer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    gap: 10px;
+    background-color: white;
+    padding: 30px 0px 15px 0px;
+    border-top: #e5e5e5 solid 1px;
+    color: #9a9a9a;
+
+    p {
+        margin: 0;
     }
 }

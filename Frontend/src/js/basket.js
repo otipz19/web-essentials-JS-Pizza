@@ -1,9 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BasketItem = exports.Basket = void 0;
-const utils_1 = require("./utils");
+exports.Basket = void 0;
+const basketItem_1 = require("./basketItem");
 class Basket {
-    constructor(element, pizzaRepository) {
+    constructor(element, basketMediator) {
+        this.basketMediator = basketMediator;
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span");
         this.totalPriceElement = document.querySelector(".total-price");
@@ -12,16 +13,15 @@ class Basket {
             event.preventDefault();
             this.clear();
         });
-        this.loadItemsFromLocalStorage(pizzaRepository);
+        this.loadItemsFromLocalStorage();
         this.onItemsUpdated();
     }
-    loadItemsFromLocalStorage(pizzaRepository) {
+    loadItemsFromLocalStorage() {
         this.items = [];
         let fromLocalStorage = this.readLocalStorage();
         for (let item of fromLocalStorage.items) {
-            let pizza = pizzaRepository.find(pizza => pizza.id == item.pizzaId);
-            let option = pizza.options.find(option => option.id == item.optionId);
-            let basketItem = new BasketItem(this, pizza, option);
+            let [pizza, option] = this.basketMediator.get(item.pizzaId, item.optionId);
+            let basketItem = new basketItem_1.BasketItem(this, pizza, option);
             this.items.push(basketItem);
             this.ordersListElement.appendChild(basketItem.card);
             basketItem.amount = item.amount;
@@ -31,7 +31,7 @@ class Basket {
     add(pizza, option) {
         let item = this.getItem(pizza, option);
         if (item === null) {
-            item = new BasketItem(this, pizza, option);
+            item = new basketItem_1.BasketItem(this, pizza, option);
             this.items.push(item);
             this.ordersListElement.appendChild(item.card);
         }
@@ -86,66 +86,4 @@ class Basket {
 }
 exports.Basket = Basket;
 Basket.LOCAL_STORAGE_KEY = "BASKET_KEY";
-;
-class BasketItem {
-    constructor(basket, pizza, option) {
-        this.basket = basket;
-        this.pizza = pizza;
-        this.option = option;
-        this.amount = 1;
-        this.buildElement();
-    }
-    buildElement() {
-        const template = document.getElementById("order-card-template");
-        this.card = (0, utils_1.cloneTemplateContent)(template);
-        (0, utils_1.loadValueToElementBySelector)(this.card, ".title", `${this.pizza.title} (${this.option.title})`);
-        (0, utils_1.loadValueToElementBySelector)(this.card, ".size", this.option.size.toString());
-        (0, utils_1.loadValueToElementBySelector)(this.card, ".weight", this.option.weight.toString());
-        this.onAmountUpdated();
-        this.addClickHandlerToBtn(".sub", () => this.decrement());
-        this.addClickHandlerToBtn(".add", () => this.increment());
-        this.addClickHandlerToBtn(".cancel", () => this.remove());
-    }
-    addClickHandlerToBtn(selector, handler) {
-        this.getBtn(selector).addEventListener("click", event => {
-            event.preventDefault();
-            handler();
-        });
-    }
-    getBtn(selector) {
-        return this.card.querySelector(selector);
-    }
-    onAmountUpdated() {
-        this.updateAmount();
-        this.basket.onItemsUpdated();
-    }
-    updateAmount() {
-        (0, utils_1.loadValueToElementBySelector)(this.card, ".cost", this.totalPrice().toString());
-        (0, utils_1.loadValueToElementBySelector)(this.card, ".amount .value", this.amount.toString());
-    }
-    totalPrice() {
-        return this.amount * this.option.price;
-    }
-    increment() {
-        this.changeAmount(this.amount + 1);
-    }
-    decrement() {
-        this.changeAmount(this.amount - 1);
-    }
-    changeAmount(value) {
-        this.amount = value;
-        if (this.amount < 1) {
-            this.remove();
-        }
-        else {
-            this.onAmountUpdated();
-        }
-    }
-    remove() {
-        this.card.remove();
-        this.basket.remove(this);
-    }
-}
-exports.BasketItem = BasketItem;
-;
 //# sourceMappingURL=basket.js.map
