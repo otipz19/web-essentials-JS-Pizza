@@ -136,11 +136,26 @@ nav {
             justify-content: start;
             align-items: center;
             color: white;
-            padding-top: 7px;
-            padding-bottom: 7px;
+            padding-top: 5px;
+            padding-bottom: 5px;
 
             @media (max-width: 650px) {
                 visibility: hidden;
+            }
+
+            a {
+                text-decoration: inherit;
+                color: inherit;
+                cursor: auto;
+                padding: 1px;
+                border: solid transparent 1px;
+            }
+
+            a:hover {
+                background-color: @mainColor;
+                border: solid @mainBorderColor 1px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 5px 1px @mainColor;
             }
         }
     }
@@ -150,8 +165,13 @@ nav {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
+    min-height: 88%;
+
+    #pizza-list {
+        min-height: 80%;
+    }
 
     >.caption {
         padding: 25px;
