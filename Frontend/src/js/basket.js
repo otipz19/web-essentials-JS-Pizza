@@ -8,13 +8,32 @@ class Basket {
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span");
         this.totalPriceElement = document.querySelector(".total-price");
-        let clearInputBtn = document.querySelector(".clear-orders");
+        this.orderBtn = document.querySelector(".order-btn");
+        this.setupClearBtn();
+        this.setupOrderBtn();
+        this.loadItemsFromLocalStorage();
+        this.onItemsUpdated();
+    }
+    setupClearBtn() {
+        const clearInputBtn = document.querySelector(".clear-orders");
         clearInputBtn.addEventListener("click", event => {
             event.preventDefault();
             this.clear();
         });
-        this.loadItemsFromLocalStorage();
-        this.onItemsUpdated();
+    }
+    setupOrderBtn() {
+        const orderBtn = document.querySelector(".order-btn");
+        orderBtn.addEventListener("click", event => {
+            let statsItems = this.items.map((value, index, arr) => {
+                return {
+                    title: `${value.pizza.title} (${value.option.title})`,
+                    amount: value.amount,
+                    cost: value.totalPrice(),
+                };
+            });
+            localStorage.setItem(Basket.STATS_LS_LEY, JSON.stringify(statsItems));
+            window.location.href = "stats.html";
+        });
     }
     loadItemsFromLocalStorage() {
         this.items = [];
@@ -59,6 +78,12 @@ class Basket {
         this.ordersAmountElement.innerText = this.items.length.toString();
         let totalPrice = this.items.reduce((res, el) => res + el.totalPrice(), 0);
         this.totalPriceElement.innerText = `${totalPrice}  грн.`;
+        if (this.items.length == 0) {
+            this.orderBtn.toggleAttribute("disabled");
+        }
+        else {
+            this.orderBtn.removeAttribute("disabled");
+        }
         this.serialize();
     }
     serialize() {
@@ -75,15 +100,16 @@ class Basket {
         this.writeLocalStorage(basketSerializable);
     }
     writeLocalStorage(basket) {
-        localStorage.setItem(Basket.LOCAL_STORAGE_KEY, JSON.stringify(basket));
+        localStorage.setItem(Basket.BASKET_LS_KEY, JSON.stringify(basket));
     }
     readLocalStorage() {
-        if (localStorage.getItem(Basket.LOCAL_STORAGE_KEY) === null) {
-            localStorage.setItem(Basket.LOCAL_STORAGE_KEY, '{"items": []}');
+        if (localStorage.getItem(Basket.BASKET_LS_KEY) === null) {
+            localStorage.setItem(Basket.BASKET_LS_KEY, '{"items": []}');
         }
-        return JSON.parse(localStorage.getItem(Basket.LOCAL_STORAGE_KEY));
+        return JSON.parse(localStorage.getItem(Basket.BASKET_LS_KEY));
     }
 }
 exports.Basket = Basket;
-Basket.LOCAL_STORAGE_KEY = "BASKET_KEY";
+Basket.BASKET_LS_KEY = "BASKET_KEY";
+Basket.STATS_LS_LEY = "STATS_KEY";
 //# sourceMappingURL=basket.js.map

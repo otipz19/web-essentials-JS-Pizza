@@ -20,10 +20,14 @@ module.exports = function (grunt) {
                 }
             },
 
-            //Збірка з назвою піца
-            pizza: {
-                src: 'Frontend/src/js/script.js',
-                dest: 'Frontend/www/assets/js/script.js'
+            index: {
+                src: 'Frontend/src/js/index.js',
+                dest: 'Frontend/www/assets/js/index.js'
+            },
+
+            stats: {
+                src: 'Frontend/src/js/stats.js',
+                dest: 'Frontend/www/assets/js/stats.js'
             }
         },
 
@@ -64,7 +68,8 @@ module.exports = function (grunt) {
     grunt.registerTask('default',
         [
             'ts',
-            'browserify:pizza',
+            'browserify:index',
+            'browserify:stats',
             //Інші завдання які необхідно виконати
         ]
     );

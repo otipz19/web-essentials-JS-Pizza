@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Pizza</title>
+
+    <!-- Bootsrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- LESS основний файл -->
+    <link rel="stylesheet/less" type="text/css" href="assets/less/stats.less" />
+    <!-- LESS JavaScript компілятор -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/2.5.3/less.min.js"></script>
+
+
+</head>
+
+<body>
+    <main>
+        <nav>
+            <div class="my-badge">
+                <div class="my-text">
+                    <label class="pizza">PIZZA</label>
+                    <label class="kma">KMA</label>
+                </div>
+                <img src="assets/images/discount.svg">
+            </div>
+            <div class="main-section">
+                <div class="upper-part">
+                    <div class="info">
+                        <div class="tel">
+                            <label>(044) 222 5 222</label>
+                        </div>
+                        <div class="time">
+                            <label>24 години / 7 днів на тиждень</label>
+                        </div>
+                        <div class="delivery">
+                            <label>Безкоштовна доставка піци</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">Увійти</button>
+                </div>
+                <div class="tabs">
+                    <a href="index.html">Піца</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="my-container">
+            <div class="caption">
+                <div class="title">
+                    <label>Статистика</label>
+                    <span id="products-count" class="round-span">2</span>
+                </div>
+                <div class="category-list">
+                    <input type="radio" name="category" id="category_2">
+                    <label for="category_2" id="cost">Вартість</label>
+
+                    <input type="radio" name="category" id="category_3">
+                    <label for="category_3" id="amount">Кількість</label>
+                </div>
+            </div>
+
+            <div id="chart-cost-container" class="chart-container">
+
+            </div>
+
+            <div id="chart-amount-container" class="chart-container">
+
+            </div>
+
+            <footer>
+                <div>
+                    <p>Pizza.22 – практичний проєкт у межах курсу JavaScript у Києво-Могилянській Академії</p>
+                </div>
+                <div>
+                    <p>Доставка піци не здійснюється</p>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <div class="discount-badge">
+        <div class="offer">
+            <label>ЦЬОГО ТИЖНЯ НА ВСЕ</label>
+        </div>
+        <div class="discount">
+            <label>-20%</label>
+        </div>
+        <img src="assets/images/discount.svg">
+    </div>
+
+    <!-- jQuery JavaScript -->
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"> </script>
+
+    <!--Bootsrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <!--Own JavaScript -->
+    <!--<script type="text/javascript"  src="assets/js/main.js"> </script>-->
+    <script>var exports = {};</script>
+    <!--Load the AJAX API-->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="assets/js/stats.js"></script>
+</body>
+
+</html>

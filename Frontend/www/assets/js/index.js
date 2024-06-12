@@ -9,13 +9,32 @@ class Basket {
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span");
         this.totalPriceElement = document.querySelector(".total-price");
-        let clearInputBtn = document.querySelector(".clear-orders");
+        this.orderBtn = document.querySelector(".order-btn");
+        this.setupClearBtn();
+        this.setupOrderBtn();
+        this.loadItemsFromLocalStorage();
+        this.onItemsUpdated();
+    }
+    setupClearBtn() {
+        const clearInputBtn = document.querySelector(".clear-orders");
         clearInputBtn.addEventListener("click", event => {
             event.preventDefault();
             this.clear();
         });
-        this.loadItemsFromLocalStorage();
-        this.onItemsUpdated();
+    }
+    setupOrderBtn() {
+        const orderBtn = document.querySelector(".order-btn");
+        orderBtn.addEventListener("click", event => {
+            let statsItems = this.items.map((value, index, arr) => {
+                return {
+                    title: `${value.pizza.title} (${value.option.title})`,
+                    amount: value.amount,
+                    cost: value.totalPrice(),
+                };
+            });
+            localStorage.setItem(Basket.STATS_LS_LEY, JSON.stringify(statsItems));
+            window.location.href = "stats.html";
+        });
     }
     loadItemsFromLocalStorage() {
         this.items = [];
@@ -60,6 +79,12 @@ class Basket {
         this.ordersAmountElement.innerText = this.items.length.toString();
         let totalPrice = this.items.reduce((res, el) => res + el.totalPrice(), 0);
         this.totalPriceElement.innerText = `${totalPrice}  грн.`;
+        if (this.items.length == 0) {
+            this.orderBtn.toggleAttribute("disabled");
+        }
+        else {
+            this.orderBtn.removeAttribute("disabled");
+        }
         this.serialize();
     }
     serialize() {
@@ -76,17 +101,18 @@ class Basket {
         this.writeLocalStorage(basketSerializable);
     }
     writeLocalStorage(basket) {
-        localStorage.setItem(Basket.LOCAL_STORAGE_KEY, JSON.stringify(basket));
+        localStorage.setItem(Basket.BASKET_LS_KEY, JSON.stringify(basket));
     }
     readLocalStorage() {
-        if (localStorage.getItem(Basket.LOCAL_STORAGE_KEY) === null) {
-            localStorage.setItem(Basket.LOCAL_STORAGE_KEY, '{"items": []}');
+        if (localStorage.getItem(Basket.BASKET_LS_KEY) === null) {
+            localStorage.setItem(Basket.BASKET_LS_KEY, '{"items": []}');
         }
-        return JSON.parse(localStorage.getItem(Basket.LOCAL_STORAGE_KEY));
+        return JSON.parse(localStorage.getItem(Basket.BASKET_LS_KEY));
     }
 }
 exports.Basket = Basket;
-Basket.LOCAL_STORAGE_KEY = "BASKET_KEY";
+Basket.BASKET_LS_KEY = "BASKET_KEY";
+Basket.STATS_LS_LEY = "STATS_KEY";
 
 },{"./basketItem":2}],2:[function(require,module,exports){
 "use strict";
@@ -104,7 +130,8 @@ class BasketItem {
     buildElement() {
         const template = document.getElementById("order-card-template");
         this.card = (0, utils_1.cloneTemplateContent)(template);
-        (0, utils_1.loadValueToElementBySelector)(this.card, ".title", `${this.pizza.title} (${this.option.title})`);
+        (0, utils_1.loadValueToElementBySelector)(this.card, ".pizza-title", this.pizza.title.toString());
+        (0, utils_1.loadValueToElementBySelector)(this.card, ".option-subtitle", `(${this.option.title})`);
         (0, utils_1.loadValueToElementBySelector)(this.card, ".size", this.option.size.toString());
         (0, utils_1.loadValueToElementBySelector)(this.card, ".weight", this.option.weight.toString());
         this.onAmountUpdated();
@@ -169,6 +196,24 @@ class BasketMediator {
 exports.BasketMediator = BasketMediator;
 
 },{}],4:[function(require,module,exports){
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const basket_1 = require("./basket");
+const pizzaList_1 = require("./pizzaList");
+const basketMediator_1 = require("./basketMediator");
+document.addEventListener("DOMContentLoaded", () => {
+    fetch("assets/data/pizza.json")
+        .then(response => response.json())
+        .then(data => {
+        const basketMediator = new basketMediator_1.BasketMediator();
+        const pizzaList = new pizzaList_1.PizzaList(data, basketMediator);
+        basketMediator.pizzaList = pizzaList;
+        const basket = new basket_1.Basket(document.querySelector(".orders-list"), basketMediator);
+        basketMediator.basket = basket;
+    });
+});
+
+},{"./basket":1,"./basketMediator":3,"./pizzaList":5}],5:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PizzaList = void 0;
@@ -264,25 +309,7 @@ class PizzaList {
 }
 exports.PizzaList = PizzaList;
 
-},{"./utils":6}],5:[function(require,module,exports){
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const basket_1 = require("./basket");
-const pizzaList_1 = require("./pizzaList");
-const basketMediator_1 = require("./basketMediator");
-document.addEventListener("DOMContentLoaded", () => {
-    fetch("assets/data/pizza.json")
-        .then(response => response.json())
-        .then(data => {
-        const basketMediator = new basketMediator_1.BasketMediator();
-        const pizzaList = new pizzaList_1.PizzaList(data, basketMediator);
-        basketMediator.pizzaList = pizzaList;
-        const basket = new basket_1.Basket(document.querySelector(".orders-list"), basketMediator);
-        basketMediator.basket = basket;
-    });
-});
-
-},{"./basket":1,"./basketMediator":3,"./pizzaList":4}],6:[function(require,module,exports){
+},{"./utils":6}],6:[function(require,module,exports){
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loadValueToElementBySelector = exports.cloneTemplateContent = void 0;
@@ -297,4 +324,4 @@ function loadValueToElementBySelector(parent, selector, value) {
 }
 exports.loadValueToElementBySelector = loadValueToElementBySelector;
 
-},{}]},{},[5]);
+},{}]},{},[4]);

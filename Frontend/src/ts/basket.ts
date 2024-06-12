@@ -3,15 +3,18 @@ import { Pizza } from './pizza';
 import { BasketSerializable, BasketItemSerializable } from './BasketSerializable';
 import { BasketMediator } from './basketMediator';
 import { BasketItem } from './basketItem';
+import { ProductStatsItem } from './productStatsItem';
 
 export class Basket {
-    private static LOCAL_STORAGE_KEY: string = "BASKET_KEY";
+    private static BASKET_LS_KEY: string = "BASKET_KEY";
+    public static STATS_LS_LEY: string = "STATS_KEY";
 
     items: BasketItem[];
 
     ordersListElement: HTMLElement;
     ordersAmountElement: HTMLElement;
     totalPriceElement: HTMLElement;
+    orderBtn: HTMLButtonElement;
 
     basketMediator: BasketMediator;
 
@@ -20,17 +23,37 @@ export class Basket {
         this.ordersListElement = element;
         this.ordersAmountElement = document.querySelector(".orders-label > span") as HTMLElement;
         this.totalPriceElement = document.querySelector(".total-price") as HTMLElement;
-        let clearInputBtn = document.querySelector(".clear-orders") as HTMLElement;
-        clearInputBtn.addEventListener("click", event => {
-            event.preventDefault();
-            this.clear();
-        })
-
+        this.orderBtn = document.querySelector(".order-btn") as HTMLButtonElement;
+        this.setupClearBtn();
+        this.setupOrderBtn();
         this.loadItemsFromLocalStorage();
         this.onItemsUpdated();
     }
 
-    private loadItemsFromLocalStorage() {
+    private setupClearBtn(): void {
+        const clearInputBtn = document.querySelector(".clear-orders") as HTMLElement;
+        clearInputBtn.addEventListener("click", event => {
+            event.preventDefault();
+            this.clear();
+        });
+    }
+
+    private setupOrderBtn(): void {
+        const orderBtn = document.querySelector(".order-btn") as HTMLElement;
+        orderBtn.addEventListener("click", event => {
+            let statsItems: ProductStatsItem[] = this.items.map((value, index, arr) => {
+                return {
+                    title: `${value.pizza.title} (${value.option.title})`,
+                    amount: value.amount,
+                    cost: value.totalPrice(),
+                };
+            });
+            localStorage.setItem(Basket.STATS_LS_LEY, JSON.stringify(statsItems));
+            window.location.href = "stats.html";
+        });
+    }
+
+    private loadItemsFromLocalStorage(): void {
         this.items = [];
         let fromLocalStorage = this.readLocalStorage();
         for (let item of fromLocalStorage.items) {
@@ -77,6 +100,11 @@ export class Basket {
         this.ordersAmountElement.innerText = this.items.length.toString();
         let totalPrice = this.items.reduce((res, el) => res + el.totalPrice(), 0);
         this.totalPriceElement.innerText = `${totalPrice}  грн.`;
+        if(this.items.length == 0) {
+            this.orderBtn.toggleAttribute("disabled");
+        } else {
+            this.orderBtn.removeAttribute("disabled");
+        }
         this.serialize();
     }
 
@@ -95,13 +123,13 @@ export class Basket {
     }
 
     private writeLocalStorage(basket: BasketSerializable): void {
-        localStorage.setItem(Basket.LOCAL_STORAGE_KEY, JSON.stringify(basket));
+        localStorage.setItem(Basket.BASKET_LS_KEY, JSON.stringify(basket));
     }
 
     private readLocalStorage(): BasketSerializable {
-        if(localStorage.getItem(Basket.LOCAL_STORAGE_KEY) === null) {
-            localStorage.setItem(Basket.LOCAL_STORAGE_KEY, '{"items": []}');
+        if(localStorage.getItem(Basket.BASKET_LS_KEY) === null) {
+            localStorage.setItem(Basket.BASKET_LS_KEY, '{"items": []}');
         }
-        return JSON.parse(localStorage.getItem(Basket.LOCAL_STORAGE_KEY)) as BasketSerializable;
+        return JSON.parse(localStorage.getItem(Basket.BASKET_LS_KEY)) as BasketSerializable;
     }
 }

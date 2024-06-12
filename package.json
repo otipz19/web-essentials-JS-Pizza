@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/google.visualization": "^0.0.74",
     "basil.js": "^0.4.3",
     "brfs": "^1.4.3",
     "ejs": "^2.4.1",
