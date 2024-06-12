@@ -41,7 +41,7 @@ export class Basket {
         orderBtn.addEventListener("click", event => {
             let statsItems: ProductStatsItem[] = this.items.map((value, index, arr) => {
                 return {
-                    title: value.pizza.title,
+                    title: `${value.pizza.title} (${value.option.title})`,
                     amount: value.amount,
                     cost: value.totalPrice(),
                 };
