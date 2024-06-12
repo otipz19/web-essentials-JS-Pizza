@@ -5,56 +5,128 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load the Visualization API and the corechart package.
     google.charts.load('current', { 'packages': ['corechart'] });
     // Set a callback to run when the Google Visualization API is loaded.
-    google.charts.setOnLoadCallback(drawCharts);
+    google.charts.setOnLoadCallback(onLoad);
 
-    const stats: ProductStatsItem[] = JSON.parse(localStorage.getItem(Basket.STATS_LS_LEY));
+    function onLoad(): void {
+        const stats: ProductStatsItem[] = JSON.parse(localStorage.getItem(Basket.STATS_LS_LEY));
+        const costChart = new CostChart(stats);
+        const amountChart = new AmountChart(stats);
 
-    function drawCharts(): void {
-        drawCostChart();
-        drawAmountChart();
+        drawCharts();
 
-        const chartCost = document.getElementById("chart-cost-container");
-        const chartAmount = document.getElementById("chart-amount-container");
-        chartCost.style.display = "none";
-        chartAmount.style.display = "none";
+        // How to debounce event?
+        // let resizeTimer;
+        // window.addEventListener("resize", () => {
+        //     clearTimeout(resizeTimer);
+        //     setTimeout(() => drawCharts, 250);
+        // });
 
-        const filters = document.querySelectorAll(".category-list > label");
-        filters.forEach(value => value.addEventListener("click", () => {
-            const filter = value as HTMLElement;
-            if (filter.id == "cost") {
-                chartCost.style.display = "inherit";
-                chartAmount.style.display = "none";
-            } else if (filter.id == "amount") {
-                chartAmount.style.display = "inherit";
-                chartCost.style.display = "none";
-            }
-        }));
+        window.onresize = drawCharts;
 
-        (filters[0] as HTMLElement).click();
+        setupFilters();
+
+        function drawCharts(): void {
+            costChart.draw();
+            amountChart.draw();
+        }
+
+        function setupFilters() {
+            const filters = document.querySelectorAll(".category-list > label");
+            filters.forEach(value => value.addEventListener("click", () => {
+                const filter = value as HTMLElement;
+                if (filter.id == "cost") {
+                    costChart.show();
+                    amountChart.hide();
+                } else if (filter.id == "amount") {
+                    amountChart.show();
+                    costChart.hide();
+                }
+                drawCharts();
+            }));
+
+            (filters[0] as HTMLElement).click();
+        }
+    }
+});
+
+abstract class Chart {
+    private data: google.visualization.DataTable;
+    private options: any;
+    private chart: google.visualization.BarChart | google.visualization.PieChart;
+
+    protected stats: ProductStatsItem[];
+    protected container: HTMLElement;
+
+    constructor(stats: ProductStatsItem[]) {
+        this.stats = stats;
+        this.container = this.getContainer();
+        this.data = this.buildData();
+        this.options = this.buildOptions();
+        this.chart = this.buildChart();
     }
 
-    function drawCostChart(): void {
-        var data = new google.visualization.DataTable();
+    public draw(): void {
+        this.chart.draw(this.data, this.options);
+    }
+
+    public show(): void {
+        this.container.style.display = "inherit";
+    }
+
+    public hide(): void {
+        this.container.style.display = "none";
+    }
+
+    protected abstract buildData(): google.visualization.DataTable;
+    protected abstract buildOptions(): any;
+    protected abstract getContainer(): HTMLElement;
+    protected abstract buildChart(): google.visualization.BarChart | google.visualization.PieChart;
+}
+
+class CostChart extends Chart {
+    constructor(stats: ProductStatsItem[]) {
+        super(stats);
+    }
+
+    protected buildData(): google.visualization.DataTable {
+        const data = new google.visualization.DataTable();
         data.addColumn('string', 'Назва');
         data.addColumn('number', 'Вартість');
-        data.addRows(stats.map((value, index, arr) => [value.title, value.cost]));
+        data.addRows(this.stats.map((value, index, arr) => [value.title, value.cost]));
+        return data;
+    }
 
-        var options = {
+    protected buildOptions() {
+        return {
             title: 'Статистика розподілу вартості замовленої піци',
             colors: ["#e6ac4f"],
         };
-
-        var chart = new google.visualization.BarChart(document.getElementById('chart-cost-container'));
-        chart.draw(data, options);
     }
 
-    function drawAmountChart(): void {
-        var data = new google.visualization.DataTable();
+    protected getContainer(): HTMLElement {
+        return document.getElementById('chart-cost-container')
+    }
+
+    protected buildChart(): google.visualization.BarChart | google.visualization.PieChart {
+        return new google.visualization.BarChart(this.container);
+    }
+}
+
+class AmountChart extends Chart {
+    constructor(stats: ProductStatsItem[]) {
+        super(stats);
+    }
+
+    protected buildData(): google.visualization.DataTable {
+        const data = new google.visualization.DataTable();
         data.addColumn('string', 'Назва');
         data.addColumn('number', 'Кількість');
-        data.addRows(stats.map((value, index, arr) => [value.title, value.amount]));
+        data.addRows(this.stats.map((value, index, arr) => [value.title, value.amount]));
+        return data;
+    }
 
-        var options = {
+    protected buildOptions() {
+        return {
             title: 'Статистика розподілу кількості замовленої піци',
             is3D: true,
             colors: [
@@ -73,10 +145,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 "#d67c29", // Rusty orange
                 "#c3711f", // Rich ochre
                 "#ab5e14"  // Deep sienna
-              ],
+            ],
         };
-
-        var chart = new google.visualization.PieChart(document.getElementById('chart-amount-container'));
-        chart.draw(data, options);
     }
-});
+
+    protected getContainer(): HTMLElement {
+        return document.getElementById('chart-amount-container');
+    }
+
+    protected buildChart(): google.visualization.BarChart | google.visualization.PieChart {
+        return new google.visualization.PieChart(this.container);
+    }
+}

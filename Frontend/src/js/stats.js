@@ -3,47 +3,91 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const basket_1 = require("./basket");
 document.addEventListener("DOMContentLoaded", () => {
     google.charts.load('current', { 'packages': ['corechart'] });
-    google.charts.setOnLoadCallback(drawCharts);
-    const stats = JSON.parse(localStorage.getItem(basket_1.Basket.STATS_LS_LEY));
-    function drawCharts() {
-        drawCostChart();
-        drawAmountChart();
-        const chartCost = document.getElementById("chart-cost-container");
-        const chartAmount = document.getElementById("chart-amount-container");
-        chartCost.style.display = "none";
-        chartAmount.style.display = "none";
-        const filters = document.querySelectorAll(".category-list > label");
-        filters.forEach(value => value.addEventListener("click", () => {
-            const filter = value;
-            if (filter.id == "cost") {
-                chartCost.style.display = "inherit";
-                chartAmount.style.display = "none";
-            }
-            else if (filter.id == "amount") {
-                chartAmount.style.display = "inherit";
-                chartCost.style.display = "none";
-            }
-        }));
-        filters[0].click();
+    google.charts.setOnLoadCallback(onLoad);
+    function onLoad() {
+        const stats = JSON.parse(localStorage.getItem(basket_1.Basket.STATS_LS_LEY));
+        const costChart = new CostChart(stats);
+        const amountChart = new AmountChart(stats);
+        drawCharts();
+        window.onresize = drawCharts;
+        setupFilters();
+        function drawCharts() {
+            costChart.draw();
+            amountChart.draw();
+        }
+        function setupFilters() {
+            const filters = document.querySelectorAll(".category-list > label");
+            filters.forEach(value => value.addEventListener("click", () => {
+                const filter = value;
+                if (filter.id == "cost") {
+                    costChart.show();
+                    amountChart.hide();
+                }
+                else if (filter.id == "amount") {
+                    amountChart.show();
+                    costChart.hide();
+                }
+                drawCharts();
+            }));
+            filters[0].click();
+        }
     }
-    function drawCostChart() {
-        var data = new google.visualization.DataTable();
+});
+class Chart {
+    constructor(stats) {
+        this.stats = stats;
+        this.container = this.getContainer();
+        this.data = this.buildData();
+        this.options = this.buildOptions();
+        this.chart = this.buildChart();
+    }
+    draw() {
+        this.chart.draw(this.data, this.options);
+    }
+    show() {
+        this.container.style.display = "inherit";
+    }
+    hide() {
+        this.container.style.display = "none";
+    }
+}
+class CostChart extends Chart {
+    constructor(stats) {
+        super(stats);
+    }
+    buildData() {
+        const data = new google.visualization.DataTable();
         data.addColumn('string', 'Назва');
         data.addColumn('number', 'Вартість');
-        data.addRows(stats.map((value, index, arr) => [value.title, value.cost]));
-        var options = {
+        data.addRows(this.stats.map((value, index, arr) => [value.title, value.cost]));
+        return data;
+    }
+    buildOptions() {
+        return {
             title: 'Статистика розподілу вартості замовленої піци',
             colors: ["#e6ac4f"],
         };
-        var chart = new google.visualization.BarChart(document.getElementById('chart-cost-container'));
-        chart.draw(data, options);
     }
-    function drawAmountChart() {
-        var data = new google.visualization.DataTable();
+    getContainer() {
+        return document.getElementById('chart-cost-container');
+    }
+    buildChart() {
+        return new google.visualization.BarChart(this.container);
+    }
+}
+class AmountChart extends Chart {
+    constructor(stats) {
+        super(stats);
+    }
+    buildData() {
+        const data = new google.visualization.DataTable();
         data.addColumn('string', 'Назва');
         data.addColumn('number', 'Кількість');
-        data.addRows(stats.map((value, index, arr) => [value.title, value.amount]));
-        var options = {
+        data.addRows(this.stats.map((value, index, arr) => [value.title, value.amount]));
+        return data;
+    }
+    buildOptions() {
+        return {
             title: 'Статистика розподілу кількості замовленої піци',
             is3D: true,
             colors: [
@@ -64,8 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 "#ab5e14"
             ],
         };
-        var chart = new google.visualization.PieChart(document.getElementById('chart-amount-container'));
-        chart.draw(data, options);
     }
-});
+    getContainer() {
+        return document.getElementById('chart-amount-container');
+    }
+    buildChart() {
+        return new google.visualization.PieChart(this.container);
+    }
+}
 //# sourceMappingURL=stats.js.map
