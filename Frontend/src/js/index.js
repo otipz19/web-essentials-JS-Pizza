@@ -14,4 +14,4 @@ document.addEventListener("DOMContentLoaded", () => {
         basketMediator.basket = basket;
     });
 });
-//# sourceMappingURL=script.js.map
+//# sourceMappingURL=index.js.map
