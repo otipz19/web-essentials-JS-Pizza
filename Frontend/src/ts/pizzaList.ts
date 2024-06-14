@@ -58,10 +58,12 @@ export class PizzaList {
     }
 
     private loadOptions(pizzaElement: HTMLElement, pizza: Pizza) {
-        let optionsContainer = pizzaElement.querySelector(".options") as HTMLElement;
-        let optionElements = optionsContainer.querySelectorAll(".option");
-        for (let i = 0; i < optionElements.length; i++) {
-            this.loadOption(optionElements[i] as HTMLElement, pizza, pizza.options[i]);
+        const optionsContainer = pizzaElement.querySelector(".options") as HTMLElement;
+        for (let i = 0; i < pizza.options.length; i++) {
+            const optionTemplate = document.getElementById("pizza-option-template") as HTMLTemplateElement;
+            const optionElement = cloneTemplateContent(optionTemplate);
+            this.loadOption(optionElement, pizza, pizza.options[i]);
+            optionsContainer.appendChild(optionElement);
         }
     }
 
@@ -85,7 +87,7 @@ export class PizzaList {
                 let pizzaCard = node as HTMLElement;
                 let categories = pizzaCard.getAttribute("data-categories").split(",");
                 let display = filter.id == "all" || categories.find(c => c == filter.id) != undefined ? "flex" : "none";
-                if(display == "flex") {
+                if (display == "flex") {
                     filteredCardsCount++;
                 }
                 pizzaCard.style.display = display;

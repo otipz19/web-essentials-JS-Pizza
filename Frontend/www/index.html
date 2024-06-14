@@ -101,7 +101,7 @@
         </div>
 
         <div class="orders-list">
-            
+
         </div>
 
         <div class="footer">
@@ -140,60 +140,43 @@
 
                 <img src="[img]">
 
-                <div class="caption">
-                    <h3 class="title">[title]</h3>
-                    <h6 class="subtitle">[subtitle]</h4>
-                        <p class="description">
-                            [description]
-                        </p>
+                <div class="pizza-card-content">
+                    <div class="caption">
+                        <h3 class="title">[title]</h3>
+                        <h6 class="subtitle">[subtitle]</h4>
+                            <p class="description">
+                                [description]
+                            </p>
+                    </div>
+
+                    <div class="options">
+
+                    </div>
                 </div>
+            </div>
+        </div>
+    </template>
 
-                <div class="options">
-                    <div class="option">
-                        <div class="stats">
-                            <div>
-                                <img src="assets/images/size-icon.svg">
-                                <label class="size">[size-small]</label>
-                            </div>
-                            <div>
-                                <img src="assets/images/weight.svg">
-                                <label class="weight">[weight-small]</label>
-                            </div>
-                        </div>
+    <template id="pizza-option-template">
+        <div class="option">
+            <div class="stats">
+                <div>
+                    <img src="assets/images/size-icon.svg">
+                    <label class="size">[size-big]</label>
+                </div>
+                <div>
+                    <img src="assets/images/weight.svg">
+                    <label class="weight">[weight-big]</label>
+                </div>
+            </div>
 
-                        <div class="buy-section">
-                            <div class="price">
-                                <label class="value">[prize-small]</label>
-                                <label class="currency">грн.</label>
-                            </div>
-                            <div class="buy-btn">
-                                <button class="btn btn-primary">Купити</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="option">
-                        <div class="stats">
-                            <div>
-                                <img src="assets/images/size-icon.svg">
-                                <label class="size">[size-big]</label>
-                            </div>
-                            <div>
-                                <img src="assets/images/weight.svg">
-                                <label class="weight">[weight-big]</label>
-                            </div>
-                        </div>
-
-                        <div class="buy-section">
-                            <div class="price">
-                                <label class="value">[price-big]</label>
-                                <label class="currency">грн.</label>
-                            </div>
-                            <div class="buy-btn">
-                                <button class="btn btn-primary">Купити</button>
-                            </div>
-                        </div>
-                    </div>
+            <div class="buy-section">
+                <div class="price">
+                    <label class="value">[price-big]</label>
+                    <label class="currency">грн.</label>
+                </div>
+                <div class="buy-btn">
+                    <button class="btn btn-primary">Купити</button>
                 </div>
             </div>
         </div>
@@ -206,7 +189,7 @@
                     <label class="pizza-title">[title]</label>
                     <label class="option-subtitle">[subtitle]</label>
                 </div>
-                
+
 
                 <div class="stats">
                     <div>

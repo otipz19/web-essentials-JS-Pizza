@@ -15,6 +15,10 @@ label {
   max-width: 250px;
   box-sizing: content-box;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   .tag-badge {
     z-index: 1;
     position: absolute;
@@ -54,6 +58,7 @@ label {
     .description {
       margin-bottom: 0;
       font-size: 1.25rem;
+      overflow-wrap: break-word;
     }
   }
 

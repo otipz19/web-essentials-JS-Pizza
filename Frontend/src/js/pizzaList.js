@@ -51,10 +51,12 @@ class PizzaList {
         img.src = pizza.img;
     }
     loadOptions(pizzaElement, pizza) {
-        let optionsContainer = pizzaElement.querySelector(".options");
-        let optionElements = optionsContainer.querySelectorAll(".option");
-        for (let i = 0; i < optionElements.length; i++) {
-            this.loadOption(optionElements[i], pizza, pizza.options[i]);
+        const optionsContainer = pizzaElement.querySelector(".options");
+        for (let i = 0; i < pizza.options.length; i++) {
+            const optionTemplate = document.getElementById("pizza-option-template");
+            const optionElement = (0, utils_1.cloneTemplateContent)(optionTemplate);
+            this.loadOption(optionElement, pizza, pizza.options[i]);
+            optionsContainer.appendChild(optionElement);
         }
     }
     loadOption(optionElement, pizza, option) {
