@@ -73,5 +73,30 @@
                 "price": 179
             }
         ]
+    },
+    {
+        "id": 4,
+        "tag": "Нова",
+        "img": "assets\\images\\pizza_5.jpg",
+        "title": "Сициліано",
+        "subtitle": "М'ясна піца",
+        "categories": ["meat", "mushrooms"],
+        "description": "Вітчина, салямі, сир моцарелла, шампінйони, перець болгарський, соус томатний",
+        "options" : [
+            {
+                "id": 1,
+                "title": "Мала",
+                "size": 30,
+                "weight": 450,
+                "price": 111
+            },
+            {
+                "id": 2,
+                "title": "Велика",
+                "size": 40,
+                "weight": 790,
+                "price": 169
+            }
+        ]
     }
 ]
