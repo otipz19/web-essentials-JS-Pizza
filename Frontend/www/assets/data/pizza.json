@@ -98,5 +98,91 @@
                 "price": 169
             }
         ]
+    },
+    {
+        "id": 5,
+        "tag": "Популярна",
+        "img": "assets\\images\\pizza_3.jpg",
+        "title": "Маргарита",
+        "subtitle": "Вега піца",
+        "categories": ["vegan"],
+        "description": "Сир моцарелла, сир домашній, помідори, базилік, оливкова олія, соус томатний",
+        "options" : [
+            {
+                "id": 1,
+                "title": "Мала",
+                "size": 30,
+                "weight": 370,
+                "price": 89
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "tag": "nodata",
+        "img": "assets\\images\\pizza_6.jpg",
+        "title": "Мікс смаків",
+        "subtitle": "М'ясна піца",
+        "categories": ["meat", "mushrooms", "pineapple"],
+        "description": "Ковбаски, сир моцарелла, шампінйони, ананаси, цибуля кримська, огірки квашені, соус гірчичний",
+        "options" : [
+            {
+                "id": 1,
+                "title": "Мала",
+                "size": 30,
+                "weight": 470,
+                "price": 115
+            },
+            {
+                "id": 2,
+                "title": "Велика",
+                "size": 40,
+                "weight": 780,
+                "price": 180
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "tag": "Популярна",
+        "img": "assets\\images\\pizza_8.jpg",
+        "title": "Дольче маре",
+        "subtitle": "Морська піца",
+        "categories": ["seafood"],
+        "description": "Криветки тигрові, мідії, ікра червона, філе червоної риби, сир моцарелла, оливкова олія, вершки",
+        "options" : [
+            {
+                "id": 1,
+                "title": "Велика",
+                "size": 40,
+                "weight": 845,
+                "price": 399
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "tag": "Нова",
+        "img": "assets\\images\\pizza_4.jpg",
+        "title": "Россо Густо",
+        "subtitle": "Морська піца",
+        "categories": ["seafood"],
+        "description": "Ікра червона, лосось копчений, сир моцарелла, оливкова олія, вершки",
+        "options" : [
+            {
+                "id": 1,
+                "title": "Мала",
+                "size": 30,
+                "weight": 400,
+                "price": 189
+            },
+            {
+                "id": 2,
+                "title": "Велика",
+                "size": 40,
+                "weight": 700,
+                "price": 299
+            }
+        ]
     }
 ]
